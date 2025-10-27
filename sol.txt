@@ -56,3 +56,93 @@ public class Solution {
         bufferedWriter.close();
     }
 }
+
+-------------------------------------------
+-----------------------------------------
+Almost sorted
+Q2 - 
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+class Result {
+
+    public static void almostSorted(List<Integer> arr) {
+        int n = arr.size();
+        
+        List<Integer> sorted = new ArrayList<>(arr);
+        Collections.sort(sorted);
+        
+        List<Integer> diffIndices = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            if (!arr.get(i).equals(sorted.get(i))) {
+                diffIndices.add(i);
+            }
+        }
+        
+        if (diffIndices.isEmpty()) {
+            System.out.println("yes");
+            return;
+        }
+        
+        if (diffIndices.size() == 2) {
+            int i = diffIndices.get(0);
+            int j = diffIndices.get(1);
+            
+            if (arr.get(i).equals(sorted.get(j)) && arr.get(j).equals(sorted.get(i))) {
+                System.out.println("yes");
+                System.out.println("swap " + (i + 1) + " " + (j + 1));
+                return;
+            }
+        }
+        
+        if (diffIndices.size() >= 2) {
+            int left = diffIndices.get(0);
+            int right = diffIndices.get(diffIndices.size() - 1);
+            
+            List<Integer> temp = new ArrayList<>(arr);
+            int l = left, r = right;
+            while (l < r) {
+                Integer t = temp.get(l);
+                temp.set(l, temp.get(r));
+                temp.set(r, t);
+                l++;
+                r--;
+            }
+            
+            if (temp.equals(sorted)) {
+                System.out.println("yes");
+                System.out.println("reverse " + (left + 1) + " " + (right + 1));
+                return;
+            }
+        }
+        
+        System.out.println("no");
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        String[] arrTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        List<Integer> arr = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            int arrItem = Integer.parseInt(arrTemp[i]);
+            arr.add(arrItem);
+        }
+
+        Result.almostSorted(arr);
+
+        bufferedReader.close();
+    }
+}
