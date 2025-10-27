@@ -60,6 +60,10 @@ public class Solution {
 -------------------------------------------
 -----------------------------------------
 Almost sorted
+
+TYPE ONLY ALMOST SORTED FUNCTION IN RESULT CLASS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 Q2 - 
 import java.io.*;
 import java.math.*;
@@ -125,6 +129,7 @@ class Result {
     }
 
 }
+----------------------------------------------------------------------------------------------------------------------------------------------------
 
 public class Solution {
     public static void main(String[] args) throws IOException {
@@ -146,3 +151,4 @@ public class Solution {
         bufferedReader.close();
     }
 }
+
