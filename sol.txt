@@ -1,3 +1,58 @@
-solutions here pleasee--->>
-suiiiiiiiiii
+Que 1 
+import java.io.*;
+import java.util.*;
 
+class Result {
+
+    public static List<String> tableOfContents(List<String> text) {
+        List<String> result = new ArrayList<>();
+        int chapterNum = 0;
+        int sectionNum = 0;
+        
+        for (String line : text) {
+            if (line.startsWith("# ")) {
+                chapterNum++;
+                sectionNum = 0;
+                String title = line.substring(2);
+                result.add(chapterNum + ". " + title);
+            } else if (line.startsWith("## ")) {
+                sectionNum++;
+                String title = line.substring(3);
+                result.add(chapterNum + "." + sectionNum + ". " + title);
+            }
+        }
+        
+        return result;
+    }
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int textCount = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<String> text = new ArrayList<>();
+
+        for (int i = 0; i < textCount; i++) {
+            String textItem = bufferedReader.readLine();
+            text.add(textItem);
+        }
+
+        List<String> result = Result.tableOfContents(text);
+
+        for (int i = 0; i < result.size(); i++) {
+            bufferedWriter.write(result.get(i));
+
+            if (i != result.size() - 1) {
+                bufferedWriter.write("\n");
+            }
+        }
+
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
