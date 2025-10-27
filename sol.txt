@@ -1,25 +1,12 @@
+do u want only this fn ? now check
 public static int minDeletions(List<Integer> arr) {
     int n = arr.size();
-    for (int i = 0; i < n; i++) {
-        List<Integer> temp = new ArrayList<>(arr);
-        temp.remove(i);
-        boolean sorted = true;
-        for (int j = 0; j < temp.size() - 1; j++) {
-            if (temp.get(j) > temp.get(j + 1)) {
-                sorted = false;
-                break;
-            }
-        }
-        if (sorted) {
-            return 1;
-        }
+    ArrayList<Integer> lis = new ArrayList<>();
+    for (int x : arr) {
+        int idx = Collections.binarySearch(lis, x);
+        if (idx < 0) idx = -(idx + 1);
+        if (idx == lis.size()) lis.add(x);
+        else lis.set(idx, x);
     }
-    boolean alreadySorted = true;
-    for (int i = 0; i < n - 1; i++) {
-        if (arr.get(i) > arr.get(i + 1)) {
-            alreadySorted = false;
-            break;
-        }
-    }
-    return alreadySorted ? 0 : 2;
+    return n - lis.size();
 }
