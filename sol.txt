@@ -1,154 +1,57 @@
-Que 1 
-import java.io.*;
-import java.util.*;
+public static void almostSorted(List<Integer> arr) {
+    int n = arr.size();
+    int left = 0;
+    int right = n - 1;
 
-class Result {
-
-    public static List<String> tableOfContents(List<String> text) {
-        List<String> result = new ArrayList<>();
-        int chapterNum = 0;
-        int sectionNum = 0;
-        
-        for (String line : text) {
-            if (line.startsWith("# ")) {
-                chapterNum++;
-                sectionNum = 0;
-                String title = line.substring(2);
-                result.add(chapterNum + ". " + title);
-            } else if (line.startsWith("## ")) {
-                sectionNum++;
-                String title = line.substring(3);
-                result.add(chapterNum + "." + sectionNum + ". " + title);
-            }
-        }
-        
-        return result;
+    while (left < n - 1 && arr.get(left) < arr.get(left + 1)) {
+        left++;
     }
-}
-
-public class Solution {
-    public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
-
-        int textCount = Integer.parseInt(bufferedReader.readLine().trim());
-
-        List<String> text = new ArrayList<>();
-
-        for (int i = 0; i < textCount; i++) {
-            String textItem = bufferedReader.readLine();
-            text.add(textItem);
-        }
-
-        List<String> result = Result.tableOfContents(text);
-
-        for (int i = 0; i < result.size(); i++) {
-            bufferedWriter.write(result.get(i));
-
-            if (i != result.size() - 1) {
-                bufferedWriter.write("\n");
-            }
-        }
-
-        bufferedWriter.newLine();
-
-        bufferedReader.close();
-        bufferedWriter.close();
-    }
-}
-
--------------------------------------------
------------------------------------------
-Almost sorted
-
-TYPE ONLY ALMOST SORTED FUNCTION IN RESULT CLASS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-Q2 - 
-import java.io.*;
-import java.math.*;
-import java.security.*;
-import java.text.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.regex.*;
-
-class Result {
-
-    public static void almostSorted(List<Integer> arr) {
-        int n = arr.size();
-        
-        List<Integer> sorted = new ArrayList<>(arr);
-        Collections.sort(sorted);
-        
-        List<Integer> diffIndices = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            if (!arr.get(i).equals(sorted.get(i))) {
-                diffIndices.add(i);
-            }
-        }
-        
-        if (diffIndices.isEmpty()) {
-            System.out.println("yes");
-            return;
-        }
-        
-        if (diffIndices.size() == 2) {
-            int i = diffIndices.get(0);
-            int j = diffIndices.get(1);
-            
-            if (arr.get(i).equals(sorted.get(j)) && arr.get(j).equals(sorted.get(i))) {
-                System.out.println("yes");
-                System.out.println("swap " + (i + 1) + " " + (j + 1));
-                return;
-            }
-        }
-        
-        if (diffIndices.size() >= 2) {
-            int left = diffIndices.get(0);
-            int right = diffIndices.get(diffIndices.size() - 1);
-            
-            List<Integer> temp = new ArrayList<>(arr);
-            int l = left, r = right;
-            while (l < r) {
-                Integer t = temp.get(l);
-                temp.set(l, temp.get(r));
-                temp.set(r, t);
-                l++;
-                r--;
-            }
-            
-            if (temp.equals(sorted)) {
-                System.out.println("yes");
-                System.out.println("reverse " + (left + 1) + " " + (right + 1));
-                return;
-            }
-        }
-        
-        System.out.println("no");
+    while (right > 0 && arr.get(right) > arr.get(right - 1)) {
+        right--;
     }
 
-}
-----------------------------------------------------------------------------------------------------------------------------------------------------
-
-public class Solution {
-    public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-        int n = Integer.parseInt(bufferedReader.readLine().trim());
-
-        String[] arrTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
-
-        List<Integer> arr = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            int arrItem = Integer.parseInt(arrTemp[i]);
-            arr.add(arrItem);
-        }
-
-        Result.almostSorted(arr);
-
-        bufferedReader.close();
+    if (left == n - 1) {
+        System.out.println("yes");
+        return;
     }
-}
 
+    List<Integer> temp = new ArrayList<>(arr);
+
+    Collections.swap(temp, left, right);
+    boolean sortedAfterSwap = true;
+    for (int i = 0; i < n - 1; i++) {
+        if (temp.get(i) > temp.get(i + 1)) {
+            sortedAfterSwap = false;
+            break;
+        }
+    }
+    if (sortedAfterSwap) {
+        System.out.println("yes");
+        System.out.println("swap " + (left + 1) + " " + (right + 1));
+        return;
+    }
+
+    temp = new ArrayList<>(arr);
+    int l = left, r = right;
+    while (l < r) {
+        int t = temp.get(l);
+        temp.set(l, temp.get(r));
+        temp.set(r, t);
+        l++;
+        r--;
+    }
+    boolean sortedAfterReverse = true;
+    for (int i = 0; i < n - 1; i++) {
+        if (temp.get(i) > temp.get(i + 1)) {
+            sortedAfterReverse = false;
+            break;
+        }
+    }
+    if (sortedAfterReverse) {
+        System.out.println("yes");
+        System.out.println("reverse " + (left + 1) + " " + (right + 1));
+        return;
+    }
+
+    System.out.println("no");
+}
