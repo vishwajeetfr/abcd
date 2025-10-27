@@ -1,57 +1,25 @@
-public static void almostSorted(List<Integer> arr) {
+public static int minDeletions(List<Integer> arr) {
     int n = arr.size();
-    int left = 0;
-    int right = n - 1;
-
-    while (left < n - 1 && arr.get(left) < arr.get(left + 1)) {
-        left++;
+    for (int i = 0; i < n; i++) {
+        List<Integer> temp = new ArrayList<>(arr);
+        temp.remove(i);
+        boolean sorted = true;
+        for (int j = 0; j < temp.size() - 1; j++) {
+            if (temp.get(j) > temp.get(j + 1)) {
+                sorted = false;
+                break;
+            }
+        }
+        if (sorted) {
+            return 1;
+        }
     }
-    while (right > 0 && arr.get(right) > arr.get(right - 1)) {
-        right--;
-    }
-
-    if (left == n - 1) {
-        System.out.println("yes");
-        return;
-    }
-
-    List<Integer> temp = new ArrayList<>(arr);
-
-    Collections.swap(temp, left, right);
-    boolean sortedAfterSwap = true;
+    boolean alreadySorted = true;
     for (int i = 0; i < n - 1; i++) {
-        if (temp.get(i) > temp.get(i + 1)) {
-            sortedAfterSwap = false;
+        if (arr.get(i) > arr.get(i + 1)) {
+            alreadySorted = false;
             break;
         }
     }
-    if (sortedAfterSwap) {
-        System.out.println("yes");
-        System.out.println("swap " + (left + 1) + " " + (right + 1));
-        return;
-    }
-
-    temp = new ArrayList<>(arr);
-    int l = left, r = right;
-    while (l < r) {
-        int t = temp.get(l);
-        temp.set(l, temp.get(r));
-        temp.set(r, t);
-        l++;
-        r--;
-    }
-    boolean sortedAfterReverse = true;
-    for (int i = 0; i < n - 1; i++) {
-        if (temp.get(i) > temp.get(i + 1)) {
-            sortedAfterReverse = false;
-            break;
-        }
-    }
-    if (sortedAfterReverse) {
-        System.out.println("yes");
-        System.out.println("reverse " + (left + 1) + " " + (right + 1));
-        return;
-    }
-
-    System.out.println("no");
+    return alreadySorted ? 0 : 2;
 }
