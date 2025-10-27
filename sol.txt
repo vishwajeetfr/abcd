@@ -1,12 +1,57 @@
-do u want only this fn ? now check
-public static int minDeletions(List<Integer> arr) {
-    int n = arr.size();
-    ArrayList<Integer> lis = new ArrayList<>();
-    for (int x : arr) {
-        int idx = Collections.binarySearch(lis, x);
-        if (idx < 0) idx = -(idx + 1);
-        if (idx == lis.size()) lis.add(x);
-        else lis.set(idx, x);
+import java.io.*;
+import java.util.*;
+import java.util.stream.*;
+
+class Result {
+    public static int minDeletions(List<Integer> arr) {
+        int n = arr.size();
+        List<Integer> lis = new ArrayList<>();
+        
+        for (int num : arr) {
+            int pos = binarySearch(lis, num);
+            if (pos == lis.size()) {
+                lis.add(num);
+            } else {
+                lis.set(pos, num);
+            }
+        }
+        
+        return n - lis.size();
     }
-    return n - lis.size();
+    
+    private static int binarySearch(List<Integer> list, int target) {
+        int left = 0, right = list.size();
+        
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (list.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        
+        return left;
+    }
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+            .map(Integer::parseInt)
+            .collect(Collectors.toList());
+
+        int result = Result.minDeletions(arr);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
 }
